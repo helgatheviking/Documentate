@@ -1,6 +1,6 @@
 <?php
 /**
- * Knowledgebase Core Functions
+ * Documentate Core Functions
  *
  * @version     0.1-beta
  * @author      helgatheviking
@@ -8,7 +8,7 @@
 
 
 /**
- * Knowledgebase get option
+ * documentate get option
  * combines both settings and permalinks
  * @since  1.0.0
  */ 
@@ -25,7 +25,7 @@ function documentate_get_option( $name = '' ){
 			'archive_page_id' => 0,
 			'archive_display' => 'subcategories',
 			'docu_qty' => 0,
-			'archive_display' => 'documents',
+			'category_display' => 'documents',
 			'search_setting' =>  'hide',
 			'breadcrumbs_setting' =>  'hide',
 			'sidebar' => 'hide',
@@ -46,7 +46,7 @@ function documentate_get_option( $name = '' ){
 
 
 /**
- * Knowledgebase get template path
+ * documentate get template path
  * @since  1.0.0
  */ 
 function documentate_get_template_path(){

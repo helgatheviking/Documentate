@@ -166,53 +166,6 @@ final class Documentate {
     }
 
 
-
-
-
-    /**
-     * Add the default settings
-     *
-     * @since 0.1.0
-     */
-    public static function update_settings() {
-        // set default settings
-        $settings = get_option( 'documentate_settings', array() );
-
-        if( empty( $settings ) ){
-            $settings = array( 
-                'archive_page_id' => 0,
-            );
-        }
-
-        // create the archive page
-        $archive_page_id = isset( $settings['archive_page_id'] ) ? $settings['archive_page_id'] : 0;
-
-        // check to see if has settings page and it exists
-        if ( $archive_page_id > 0 && ( $page_object = get_post( $archive_page_id ) ) ) {
-            if ( 'page' === $page_object->post_type && ! in_array( $page_object->post_status, array( 'pending', 'trash', 'future', 'auto-draft' ) ) ){
-                return; // found the page and it is published so we're good
-            } 
-        }
-
-        // or create the new page
-        $page_data = array(
-                'post_status'    => 'publish',
-                'post_type'      => 'page',
-                'post_author'    => get_current_user_id(),
-                'post_name'      => _x( 'knowledgebase', 'default slug', 'documentate' ),
-                'post_title'     => __( 'Knowledgebase', 'documentate' ),
-                'post_content'   => '',
-                'comment_status' => 'closed',
-                'ping_status'           =>  'closed',
-            );
-        $page_id   = wp_insert_post( $page_data );
-
-        $settings['archive_page_id'] = $page_id;
-        update_option( 'documentate_settings', $settings );
-    }
-
-
-
     /**
      * Get the plugin url.
      * @return string
@@ -220,6 +173,7 @@ final class Documentate {
     public function plugin_url() {
         return untrailingslashit( plugins_url( '/', __FILE__ ) );
     }
+
 
     /**
      * Get the plugin path.

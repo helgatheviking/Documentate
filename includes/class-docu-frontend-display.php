@@ -1,6 +1,6 @@
 <?php
 /**
- * Knowledgebase Settings
+ * Frontend Display
  *
  * @version     0.1-beta
  * @author      helgatheviking
