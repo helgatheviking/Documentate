@@ -78,11 +78,9 @@ class Documentate_Admin_Settings {
 
 		$clean['archive_display'] =  isset( $input['archive_display'] ) && in_array( $input['archive_display'], array( 'documents', 'subcategories', 'both' ) ) ? $input['archive_display'] : 'subcategories' ;  
 
-		$clean['docu_qty'] = intval( $input['docu_qty'] );
+		$clean['docu_qty'] = isset( $input['archive_display'] ) ? intval( $input['docu_qty'] ) : 0;
 
 		$clean['category_display'] =  isset( $input['category_display'] ) && in_array( $input['category_display'], array( 'documents', 'subcategories', 'both' ) ) ? $input['category_display'] : 'subcategories' ;  
-
-		$clean['cat_docu_qty'] = intval( $input['cat_docu_qty'] );
 
 		$clean['search_setting'] =  isset( $input['search_setting'] ) && $input['search_setting'] == 'show' ? 'show' : 'hide' ;  
 		
