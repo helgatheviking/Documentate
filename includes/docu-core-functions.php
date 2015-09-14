@@ -50,7 +50,7 @@ function documentate_get_option( $name = '' ){
  * @since  1.0.0
  */ 
 function documentate_get_template_path(){
-	return apply_filters( 'documentate_template_path', 'wp_knowledgebase/' );
+	return apply_filters( 'documentate_template_path', 'documentate/' );
 }
 
 
@@ -59,7 +59,7 @@ function documentate_get_template_path(){
  *
  * Handles template usage so that we can use our own templates instead of the themes.
  *
- * Templates are in the 'templates' folder. knowledgebase looks for theme
+ * Templates are in the 'templates' folder. Documentate looks for theme
  * overrides in /theme/documentate/ by default
  *
  * @param mixed $template
@@ -181,7 +181,7 @@ function documentate_locate_template( $template_name, $template_path = '', $defa
 	);
 
 	// Get default template
-	if ( ! $template || Documentate_TEMPLATE_DEBUG_MODE ) {
+	if ( ! $template || DOCUMENTATE_TEMPLATE_DEBUG_MODE ) {
 		$template = $default_path . $template_name;
 	}
 
@@ -318,7 +318,7 @@ function documentate_document_post_type_link( $permalink, $post ) {
 		}
 	} else {
 		// If no terms are assigned to this post, use a string instead (can't leave the placeholder there)
-		$docu_cat = _x( 'uncategorized', 'slug', 'woocommerce' );
+		$docu_cat = _x( 'uncategorized', 'slug', 'documentate' );
 	}
 
 	$find = array(
@@ -353,7 +353,7 @@ add_filter( 'post_type_link', 'documentate_document_post_type_link', 10, 2 );
 
 
 /**
- * Get the placeholder image URL for products etc
+ * Get the placeholder image URL for documents etc
  *
  * @access public
  * @return string

@@ -64,7 +64,7 @@ class Documentate_Admin {
 		$screen = get_current_screen();
 		$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		// Edit product category pages
+		// Edit document category pages
 		if ( in_array( $screen->id, array( 'edit-docu_cat' ) ) ) {
 			wp_enqueue_media();
 		}

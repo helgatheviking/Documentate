@@ -146,7 +146,7 @@ class Documentate_Breadcrumbs {
 			$post = get_post( $post_id );
 		}
 
-		if ( 'documentate' === get_post_type( $post ) ) {
+		if ( 'document' === get_post_type( $post ) ) {
 			$this->prepend_archive_page();
 			if ( $terms = get_the_terms( $post->ID, 'docu_cat' ) ) {
 				$main_term = apply_filters( 'documentate_breadcrumb_main_term', $terms[0], $terms );
@@ -195,18 +195,18 @@ class Documentate_Breadcrumbs {
 	}
 
 	/**
-	 * Product category trail
+	 * Document category trail
 	 */
 	private function add_crumbs_document_category() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
 
 		$this->prepend_archive_page();
-		$this->term_ancestors( $current_term->term_id, 'product_cat' );
+		$this->term_ancestors( $current_term->term_id, 'docu_cat' );
 		$this->add_crumb( $current_term->name );
 	}
 
 	/**
-	 * Product tag trail
+	 * Document tag trail
 	 */
 	private function add_crumbs_document_tag() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
@@ -226,11 +226,11 @@ class Documentate_Breadcrumbs {
 		$_name = $page_id ? get_the_title( $page_id ) : '';
 
 		if ( ! $_name ) {
-			$document_post_type = get_post_type_object( 'documentate' );
+			$document_post_type = get_post_type_object( 'document' );
 			$_name = $document_post_type->labels->singular_name;
 		}
 
-		$this->add_crumb( $_name, get_post_type_archive_link( 'documentate' ) );
+		$this->add_crumb( $_name, get_post_type_archive_link( 'document' ) );
 	}
 
 	/**

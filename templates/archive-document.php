@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-get_header( 'knowledgebase' ); ?>
+get_header( 'document' ); ?>
 
     <?php
         /**
@@ -95,4 +95,4 @@ get_header( 'knowledgebase' ); ?>
         do_action( 'documentate_sidebar' );
     ?>
 
-<?php get_footer( 'knowledgebase' ); ?>
+<?php get_footer( 'document' ); ?>

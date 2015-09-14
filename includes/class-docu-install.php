@@ -77,25 +77,6 @@ class Docu_Install {
 
 
 	/**
-	 * Create page that the plugin relies on, storing page id's in variables.
-	 */
-	public static function create_page() {
-
-        $page_data = array(
-                'post_status'    => 'publish',
-                'post_type'      => 'page',
-                'post_author'    => get_current_user_id(),
-                'post_name'      => _x( 'knowledgebase', 'default slug', 'documentate' ),
-                'post_title'     => __( 'Knowledgebase', 'documentate' ),
-                'post_content'   => '',
-                'comment_status' => 'closed',
-                'ping_status'           =>  'closed',
-            );
-        return wp_insert_post( apply_filters( 'documentate_create_page', $page_data ) );
-
-	}
-
-	/**
 	 * Default options
 	 *
 	 * Sets up the default options used on the settings page
@@ -124,6 +105,25 @@ class Docu_Install {
         update_option( 'documentate_settings', $settings );
 	}
 
+
+	/**
+	 * Create page that the plugin relies on, storing page id's in variables.
+	 */
+	public static function create_page() {
+
+        $page_data = array(
+                'post_status'    => 'publish',
+                'post_type'      => 'page',
+                'post_author'    => get_current_user_id(),
+                'post_name'      => _x( 'documents', 'default slug', 'documentate' ),
+                'post_title'     => __( 'Documents', 'documentate' ),
+                'post_content'   => '',
+                'comment_status' => 'closed',
+                'ping_status'           =>  'closed',
+            );
+        return wp_insert_post( apply_filters( 'documentate_create_page', $page_data ) );
+
+	}
 
 	/**
 	 * Set up the database tables which the plugin needs to function.
@@ -163,7 +163,7 @@ CREATE TABLE {$wpdb->prefix}documentate_termmeta (
 	 */
 	public static function plugin_action_links( $links ) {
 		$action_links = array(
-			'settings' => '<a href="' . admin_url( 'admin.php?page=wc-settings' ) . '" title="' . esc_attr( __( 'View Documentate Settings', 'woocommerce' ) ) . '">' . __( 'Settings', 'woocommerce' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'admin.php?page=wc-settings' ) . '" title="' . esc_attr( __( 'View Documentate Settings', 'documentate' ) ) . '">' . __( 'Settings', 'documentate' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );

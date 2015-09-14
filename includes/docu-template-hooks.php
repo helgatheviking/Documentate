@@ -49,7 +49,7 @@ add_action( 'documentate_archive_description', 'documentate_document_archive_des
 
 
 /**
- * Product Loop Items
+ * Document Loop Items
  *
  * @see documentate_template_loop_title()
  * @see documentate_template_loop_excerpt()

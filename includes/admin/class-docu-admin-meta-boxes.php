@@ -2,7 +2,7 @@
 /**
  * Knowledgebase Meta Boxes
  *
- * Sets up the write panels used by products and orders (custom post types)
+ * Sets up the write panels used by documents and orders (custom post types)
  *
  * @author      helgatheviking
  * @category    Admin
@@ -74,7 +74,7 @@ class Documentate_Admin_Meta_Boxes {
 	 * Add Meta boxes
 	 */
 	public function add_meta_boxes() {
-		add_meta_box( 'postexcerpt', __( 'Product Short Description', 'documentate' ), array( $this, 'short_description_metabox_output' ), 'document', 'normal' );
+		add_meta_box( 'postexcerpt', __( 'Document Short Description', 'documentate' ), array( $this, 'short_description_metabox_output' ), 'document', 'normal' );
 	}
 
 	public function short_description_metabox_output( $post ){

@@ -312,7 +312,7 @@ console.log(wp.media);
 	}
 
 	/**
-	 * Maintain term hierarchy when editing a product.
+	 * Maintain term hierarchy when editing a document.
 	 *
 	 * @param  array $args
 	 * @return array

@@ -20,7 +20,7 @@ $category_slug = documentate_get_option( 'category_base' );
 // Get archive page
 $archive_page_id = documentate_get_option( 'archive_page_id' );
 	 
-$archive_slug      = urldecode( ( $archive_page_id > 0 && get_post( $archive_page_id ) ) ? get_page_uri( $archive_page_id ) : _x( 'knowledgebase', 'default slug', 'documentate' ) );
+$archive_slug      = urldecode( ( $archive_page_id > 0 && get_post( $archive_page_id ) ) ? get_page_uri( $archive_page_id ) : _x( 'documents', 'default slug', 'documentate' ) );
 $default_base   = _x( 'document', 'default slug', 'documentate' );
 
 $structures = array(
@@ -52,10 +52,10 @@ $structures = array(
 		</tr>
 	<?php endif; ?>
 	<tr>
-		<th><label><input name="documentate_permalinks[document_permalink]" id="knowledgebase_custom_selection" type="radio" value="custom" class="tog" <?php checked( in_array( $document_permalink, $structures ), false ); ?> />
+		<th><label><input name="documentate_permalinks[document_permalink]" id="documentate_custom_selection" type="radio" value="custom" class="tog" <?php checked( in_array( $document_permalink, $structures ), false ); ?> />
 			<?php _e( 'Custom Base', 'documentate' ); ?></label></th>
 			<td>
-				<input name="documentate_permalinks[document_permalink_structure]" id="knowledgebase_permalink_structure" type="text" value="<?php echo esc_attr( $document_permalink ); ?>" class="regular-text code"> <span class="description"><?php _e( 'Enter a custom base to use. A base <strong>must</strong> be set or WordPress will use default instead.', 'documentate' ); ?></span>
+				<input name="documentate_permalinks[document_permalink_structure]" id="documentate_permalink_structure" type="text" value="<?php echo esc_attr( $document_permalink ); ?>" class="regular-text code"> <span class="description"><?php _e( 'Enter a custom base to use. A base <strong>must</strong> be set or WordPress will use default instead.', 'documentate' ); ?></span>
 			</td>
 		</tr>
 	</tbody>
@@ -63,10 +63,10 @@ $structures = array(
 <script type="text/javascript">
 	jQuery( function() {
 		jQuery('input.kbetog').change(function() {
-			jQuery('#knowledgebase_permalink_structure').val( jQuery( this ).val() );
+			jQuery('#documentate_permalink_structure').val( jQuery( this ).val() );
 		});
-		jQuery('#knowledgebase_permalink_structure').focus( function(){
-			jQuery('#knowledgebase_custom_selection').click();
+		jQuery('#documentate_permalink_structure').focus( function(){
+			jQuery('#documentate_custom_selection').click();
 		} );
 	} );
 </script>

@@ -164,10 +164,10 @@ function documentate_document_dropdown_categories( $args = array(), $deprecated_
 	}
 
 	$output  = "<select name='docu_cat' class='dropdown_docu_cat'>";
-	$output .= '<option value="" ' .  selected( $current_docu_cat, '', false ) . '>' . __( 'Select a category', 'woocommerce' ) . '</option>';
+	$output .= '<option value="" ' .  selected( $current_docu_cat, '', false ) . '>' . __( 'Select a category', 'documentate' ) . '</option>';
 	$output .= documentate_walk_category_dropdown_tree( $terms, 0, $args );
 	if ( $args['show_uncategorized'] ) {
-		$output .= '<option value="0" ' . selected( $current_docu_cat, '0', false ) . '>' . __( 'Uncategorized', 'woocommerce' ) . '</option>';
+		$output .= '<option value="0" ' . selected( $current_docu_cat, '0', false ) . '>' . __( 'Uncategorized', 'documentate' ) . '</option>';
 	}
 	$output .= "</select>";
 
@@ -175,20 +175,20 @@ function documentate_document_dropdown_categories( $args = array(), $deprecated_
 }
 
 /**
- * Walk the Product Categories.
+ * Walk the Document Categories.
  *
  * @return mixed
  */
 function documentate_walk_category_dropdown_tree() {
-	if ( ! class_exists( 'WC_Product_Cat_Dropdown_Walker' ) ) {
-		include_once( WC()->plugin_path() . '/includes/walkers/class-product-cat-dropdown-walker.php' );
+	if ( ! class_exists( 'DOCU_cat_Dropdown_Walker' ) ) {
+		include_once( WC()->plugin_path() . '/includes/walkers/class-document-cat-dropdown-walker.php' );
 	}
 
 	$args = func_get_args();
 
 	// the user's options are the third parameter
 	if ( empty( $args[2]['walker']) || !is_a($args[2]['walker'], 'Walker' ) ) {
-		$walker = new WC_Product_Cat_Dropdown_Walker;
+		$walker = new DOCU_cat_Dropdown_Walker;
 	} else {
 		$walker = $args[2]['walker'];
 	}

@@ -59,7 +59,7 @@ class Documentate_Admin_Permalink_Settings {
 	 * @since  1.0.0
 	 */
 	public function document_category_slug_input() {  ?>
-	    <input name="documentate_permalinks[category_base]" type="text" class="regular-text code" value="<?php echo esc_attr( documentate_get_option( 'category_base' ) ); ?>" placeholder="<?php echo esc_attr_x('knowledgebase_category', 'slug', 'documentate') ?>" />
+	    <input name="documentate_permalinks[category_base]" type="text" class="regular-text code" value="<?php echo esc_attr( documentate_get_option( 'category_base' ) ); ?>" placeholder="<?php echo esc_attr_x( 'docu_cat', 'slug', 'documentate' ) ?>" />
 	    <?php
 	}
 
@@ -69,7 +69,7 @@ class Documentate_Admin_Permalink_Settings {
 	 * @since  1.0.0
 	 */
 	public function document_tag_slug_input() { ?>
-	    <input name="documentate_permalinks[tag_base]" type="text" class="regular-text code" value="<?php echo esc_attr( documentate_get_option( 'tag_base' ) ); ?>" placeholder="<?php echo esc_attr_x('knowledgebase_tags', 'slug', 'documentate') ?>" />
+	    <input name="documentate_permalinks[tag_base]" type="text" class="regular-text code" value="<?php echo esc_attr( documentate_get_option( 'tag_base' ) ); ?>" placeholder="<?php echo esc_attr_x( 'docu_tag', 'slug', 'documentate' ) ?>" />
 	    <?php
 	}
 
@@ -109,8 +109,8 @@ class Documentate_Admin_Permalink_Settings {
 				$document_permalink = trim( sanitize_text_field( $input['document_permalink_structure'] ), '/' );
 
 				// This is an invalid base structure and breaks pages
-				if ( '%document_cat%' == $document_permalink ) {
-					$document_permalink = _x( 'knowledgebase', 'slug', 'documentate' ) . '/' . $document_permalink;
+				if ( '%docu_cat%' == $document_permalink ) {
+					$document_permalink = _x( 'document', 'slug', 'documentate' ) . '/' . $document_permalink;
 				}
 
 				// Prepending slash
@@ -123,7 +123,7 @@ class Documentate_Admin_Permalink_Settings {
 
 			// Shop base may require verbose page rules if nesting pages
 			$archive_page_id = documentate_get_option( 'archive_page_id' );
-			$archive_permalink = ( $archive_page_id > 0 && get_post( $archive_page_id ) ) ? get_page_uri( $archive_page_id ) : _x( 'knowledgebase', 'default-slug', 'documentate' );
+			$archive_permalink = ( $archive_page_id > 0 && get_post( $archive_page_id ) ) ? get_page_uri( $archive_page_id ) : _x( 'documents', 'default-slug', 'documentate' );
 
 			if ( $archive_page_id && trim( $permalinks['document_base'], '/' ) === $archive_permalink ) {
 				$permalinks['use_verbose_page_rules'] = true;

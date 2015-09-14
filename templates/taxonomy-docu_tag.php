@@ -1,6 +1,6 @@
 <?php
 /**
- * The Template for displaying products in an document tag. Simply includes the archive taxonomies template.
+ * The Template for displaying documents in an document tag. Simply includes the archive taxonomies template.
  *
  * Override this template by copying it to yourtheme/documentate/taxonomy-docu_tag.php
  *

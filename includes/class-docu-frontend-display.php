@@ -50,21 +50,7 @@ class Docu_Frontend_Display {
         if( is_documentate() ){
             $c[] = 'documentate';
         }
-        if( is_singular( 'document' ) ){
-            $display_sidebar = documentate_get_option( 'sidebar_inner');
-        } elseif ( is_post_type_archive( 'documentate' ) || is_tax( array( 'docu_cat', 'docu_tag' ) ) ) {
-            $display_sidebar = documentate_get_option( 'sidebar_home' );
-        }
-
-        switch( $display_sidebar ){
-            case 1 :
-                $c[] = 'documentate-left-sidebar';
-                break;
-            case 2 :
-                $c[] = 'documentate-right-sidebar';
-                break;
-        }
-
+    
         return $c;
     }
 

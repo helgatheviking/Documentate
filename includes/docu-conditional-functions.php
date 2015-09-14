@@ -25,7 +25,7 @@ function is_documentate() {
 if ( ! function_exists( 'is_document_archive' ) ) {
 
 	/**
-	 * is_document_archive - Returns true when viewing the product type archive (shop).
+	 * is_document_archive - Returns true when viewing the document type archive (shop).
 	 * @return bool
 	 */
 	function is_document_archive() {
@@ -36,7 +36,7 @@ if ( ! function_exists( 'is_document_archive' ) ) {
 if ( ! function_exists( 'is_document_taxonomy' ) ) {
 
 	/**
-	 * is_document_taxonomy - Returns true when viewing a product taxonomy archive.
+	 * is_document_taxonomy - Returns true when viewing a document taxonomy archive.
 	 * @return bool
 	 */
 	function is_document_taxonomy() {
@@ -47,7 +47,7 @@ if ( ! function_exists( 'is_document_taxonomy' ) ) {
 if ( ! function_exists( 'is_document_category' ) ) {
 
 	/**
-	 * is_document_category - Returns true when viewing a product category.
+	 * is_document_category - Returns true when viewing a document category.
 	 * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
 	 * @return bool
 	 */
@@ -59,7 +59,7 @@ if ( ! function_exists( 'is_document_category' ) ) {
 if ( ! function_exists( 'is_document_tag' ) ) {
 
 	/**
-	 * is_document_tag - Returns true when viewing a product tag.
+	 * is_document_tag - Returns true when viewing a document tag.
 	 * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
 	 * @return bool
 	 */

@@ -9,12 +9,12 @@
 /**
  * Enables template debug mode
  */
-function documentate_template_debug_mode() {
+function DOCUMENTATE_TEMPLATE_DEBUG_MODE() {
     if ( ! defined( 'DOCUMENTATE_TEMPLATE_DEBUG_MODE' ) ) {
         define( 'DOCUMENTATE_TEMPLATE_DEBUG_MODE', false );
     }
 }
-add_action( 'after_setup_theme', 'documentate_template_debug_mode', 20 );
+add_action( 'after_setup_theme', 'DOCUMENTATE_TEMPLATE_DEBUG_MODE', 20 );
 
 
 /**
@@ -173,7 +173,7 @@ if ( ! function_exists( 'get_document_search_form' ) ) {
     }
 }
 
-/** Single Product ********************************************************/
+/** Single Document ********************************************************/
 
 
 if ( ! function_exists( 'documentate_template_single_title' ) ) {
@@ -217,7 +217,7 @@ if ( ! function_exists( 'documentate_comments' ) ) {
     /**
      * Output the Review comments template.
      *
-     * @subpackage  Product
+     * @subpackage  Document
      */
     function documentate_comments() {
         $display_comments = documentate_get_option( 'comments_setting' );
@@ -388,7 +388,7 @@ if ( ! function_exists( 'documentate_pagination' ) ) {
 if ( ! function_exists( 'documentate_document_subcategories' ) ) {
 
     /**
-     * Display product sub categories as thumbnails.
+     * Display document sub categories as thumbnails.
      *
      * @subpackage  Loop
      * @param array $args
@@ -463,7 +463,7 @@ if ( ! function_exists( 'documentate_document_subcategories' ) ) {
                 ) );
             }
 
-            // If we are hiding products disable the loop and pagination
+            // If we are hiding documents disable the loop and pagination
             if ( is_document_category() ) {
                 $display_type = get_documentate_term_meta( $term->term_id, 'display_type', true );
                 switch ( $display_type ) {
@@ -501,7 +501,7 @@ if ( ! function_exists( 'documentate_subcategory_thumbnail' ) ) {
      * @subpackage  Loop
      */
     function documentate_subcategory_thumbnail( $category ) {
-        $small_thumbnail_size   = apply_filters( 'single_product_small_thumbnail_size', 'document_catalog' );
+        $small_thumbnail_size   = apply_filters( 'single_document_small_thumbnail_size', 'document_catalog' );
         $dimensions             = array( 'width' => 300, 'height' => 300 );
         $thumbnail_id           = get_documentate_term_meta( $category->term_id, 'thumbnail_id', true  );
 

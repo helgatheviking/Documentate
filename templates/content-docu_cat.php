@@ -1,8 +1,8 @@
 <?php
 /**
- * The template for displaying product category thumbnails within loops.
+ * The template for displaying document category thumbnails within loops.
  *
- * Override this template by copying it to yourtheme/woocommerce/content-docu_cat.php
+ * Override this template by copying it to yourtheme/documentate/content-docu_cat.php
  *
  * @author 		helgatheviking
  * @package 	Documentate/Templates
