@@ -1,6 +1,6 @@
 <?php
 /**
- * Knowledgebase Settings Display Page
+ * Documentate Settings Display Page
  *
  * @version     0.1-beta
  * @author      helgatheviking
@@ -10,7 +10,7 @@
 	<div id="wpbody-content">
 		<div class="wrap">
 			
-			<h1><?php _e( 'Knowledgebase Display Settings', 'documentate' )?></h1>
+			<h1><?php _e( 'Document Display Settings', 'documentate' )?></h1>
 	
 			<?php settings_errors( 'documentate_settings' );            ?>
 		
@@ -23,17 +23,17 @@
 				<h3 class="title"><?php _e( 'Settings', 'documentate' ); ?></h3>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table knowedgebase-settings">
 					<tr>
-						<th><label for="documentate_archive_page_id"><?php _e( 'Knowledgebase Archive', 'documentate' ); ?></label></th>
+						<th><label for="documentate_archive_page_id"><?php _e( 'Documents Archive', 'documentate' ); ?></label></th>
 						<td colspan="3">
 							<?php 
-							$dropdown_args = array( 'show_option_none' => __( '--Select the Knowledgebase Archive--' ), 
+							$dropdown_args = array( 'show_option_none' => __( '--Select the Documents Archive--' ), 
 													'name'=>'documentate_settings[archive_page_id]',
 													'id' => 'documentate_archive_page_id',
 													'selected' => documentate_get_option( 'archive_page_id' ) );
 							wp_dropdown_pages( $dropdown_args );
 							?> 
 						<p class="description">
-							<?php printf( __( 'The base page can also be used in your <a href="%s">Knowledgebase permalinks</a>.', 'documentate' ), '<strong>', '</strong>', admin_url( 'options-permalink.php' ) ); ?>
+							<?php printf( __( 'The base page can also be used in your <a href="%s">Documents permalinks</a>.', 'documentate' ), '<strong>', '</strong>', admin_url( 'options-permalink.php' ) ); ?>
 						</p>
 						</td>
 					</tr>

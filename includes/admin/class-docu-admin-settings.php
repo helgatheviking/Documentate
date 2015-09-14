@@ -1,6 +1,6 @@
 <?php
 /**
- * Knowledgebase Settings
+ * Documentate Settings
  *
  * @version     0.1-beta
  * @author      helgatheviking

@@ -561,18 +561,9 @@ if ( ! function_exists( 'documentate_subcategory_documents' ) ) {
 
                 documentate_document_loop_start();
 
-                $counter = 1;
-
                 while ( $documents->have_posts() ) : $documents->the_post();
 
                     documentate_get_template_part( 'content', 'document' ); 
-
-                    // break the loop early
-                    if( $counter > $docs_to_show ){
-                        break; 
-                    }
-
-                    $counter++;
 
                 endwhile; // end of the loop. 
 
