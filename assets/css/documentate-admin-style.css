@@ -1,0 +1,41 @@
+/**
+ * Admin Settings Stylesheet
+ */
+@media only screen and (min-width: 782px) {
+  .documentate_admin_left_content {
+    float: left;
+    width: 68%;
+  }
+
+  .documentate_admin_sidebar {
+    float: right;
+    width: 28%;
+  }
+}
+.documentate_admin_sidebar .postbox h3.hndle {
+  cursor: pointer;
+}
+
+.documentate_admin_order
+li {
+  background-color: #FCFCFC;
+  border: 1px solid #DFDFDF;
+  border-radius: 4px;
+  cursor: move;
+  line-height: 1em;
+  margin-bottom: 6px;
+  padding: 0.6em 1em;
+}
+.documentate_admin_order
+li.ui-state-highlight {
+  background-color: lightYellow;
+  border-color: #E6DB55;
+  height: 1em;
+}
+
+.documentate_admin_settings .spinner {
+  float: none;
+  margin-top: 0;
+}
+
+/*# sourceMappingURL=documentate-admin-style.css.map */

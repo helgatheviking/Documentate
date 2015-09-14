@@ -1,0 +1,91 @@
+.documentate {
+  /**
+   * Search
+   */
+  /**
+   * Breadcrumbs
+   */
+  /**
+   * List Documents
+   */
+  /**
+   * Single Article
+   */
+}
+.documentate .documentate-search {
+  margin-bottom: 1.625em;
+}
+.documentate nav.documentate-breadcrumb {
+  margin-bottom: 1.625em;
+}
+.documentate ul.documents {
+  list-style: none;
+  padding-left: 0;
+}
+.documentate ul.documents .count {
+  font-size: .5em;
+  padding: .25em .5em;
+  vertical-align: middle;
+}
+.documentate ul.documents ul {
+  margin-left: 0;
+}
+.documentate ul.documents > li.document > a:before {
+  font-family: dashicons;
+  content: "\f123";
+  display: inline-block;
+  font-size: .75em;
+  font-weight: normal;
+}
+.documentate ul.documents > li.document > a h3 {
+  font-weight: normal;
+  display: inherit;
+}
+.documentate nav.documentate-pagination {
+  text-align: center;
+  margin-bottom: 1.625em;
+}
+.documentate nav.documentate-pagination ul {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0;
+  clear: both;
+}
+.documentate nav.documentate-pagination ul li {
+  padding: 0;
+  margin: 0;
+  float: left;
+  display: inline;
+  overflow: hidden;
+}
+.documentate nav.documentate-pagination ul li a,
+.documentate nav.documentate-pagination ul li span {
+  margin: 0;
+  text-decoration: none;
+  padding: 0;
+  line-height: 1;
+  font-size: 1em;
+  font-weight: normal;
+  padding: .5em;
+  min-width: 1em;
+  display: block;
+}
+.documentate nav.documentate-pagination ul li span.current,
+.documentate nav.documentate-pagination ul li a:hover,
+.documentate nav.documentate-pagination ul li a:focus {
+  font-weight: bold;
+}
+.documentate .entry-tags {
+  list-style: none;
+  padding-left: 0;
+}
+.documentate .entry-tags li {
+  display: inline;
+  margin-right: .25em;
+}
+.documentate .entry-tags a:before {
+  font-family: 'dashicons';
+  content: "\f323";
+}
+
+/*# sourceMappingURL=documentate-frontend-style.css.map */

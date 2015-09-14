@@ -1,0 +1,29 @@
+{
+  "title": "Documentate",
+  "name": "Documentate",
+  "version": "0.1-beta",
+  "description": "Create a knowledgebase",
+  "main": "Gruntfile.js",
+  "license": "GPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/helgatheviking/documentate"
+  },
+  "bugs": {
+    "url": "https://github.com/helgatheviking/documentate/issues"
+  },
+  "author": "helgatheviking",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "load-grunt-tasks": "~0.4.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "jshint-stylish": "~0.1.5",
+    "grunt-wp-i18n": "~0.4.9",
+    "grunt-newer": "~0.7.0",
+    "grunt-wp-readme-to-markdown": "~0.7.0",
+    "grunt-contrib-sass": "~0.9.2",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-text-replace": "~0.3.0"
+  }
+}
