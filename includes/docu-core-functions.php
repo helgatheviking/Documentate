@@ -78,13 +78,7 @@ function documentate_template_chooser($template){
 	$find = array();
 	$file = '';
 
-	if ( $wp_query->is_search && get_post_type() == 'document' ){
-
-		$file = 'documentate_search.php';
-		$find[] = $file;
-		$find[] = $template_path . $file;
-
-	} elseif ( is_single() && get_post_type() == 'document' ) {
+	if ( is_single() && get_post_type() == 'document' ) {
 
 		$file   = 'single-document.php';
 		$find[] = $file;
