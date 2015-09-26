@@ -196,22 +196,7 @@ function documentate_walk_category_dropdown_tree() {
 	return call_user_func_array( array( &$walker, 'walk' ), $args );
 }
 
-/**
- * Documentate Term/Order item Meta API - set table name
- */
-function documentate_taxonomy_metadata_wpdbfix() {
-	global $wpdb;
-	$termmeta_name = 'documentate_termmeta';
-	$itemmeta_name = 'documentate_order_itemmeta';
 
-	$wpdb->documentate_termmeta = $wpdb->prefix . $termmeta_name;
-	$wpdb->order_itemmeta = $wpdb->prefix . $itemmeta_name;
-
-	$wpdb->tables[] = 'documentate_termmeta';
-	$wpdb->tables[] = 'documentate_order_itemmeta';
-}
-add_action( 'init', 'documentate_taxonomy_metadata_wpdbfix', 0 );
-add_action( 'switch_blog', 'documentate_taxonomy_metadata_wpdbfix', 0 );
 
 /**
  * When a term is split, ensure meta data maintained.
@@ -224,15 +209,15 @@ function documentate_taxonomy_metadata_update_content_for_split_terms( $old_term
 	global $wpdb;
 
 	if ( 'docu_cat' === $taxonomy || taxonomy_is_document_attribute( $taxonomy ) ) {
-		$old_meta_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}documentate_termmeta WHERE documentate_term_id = %d;", $old_term_id ) );
+		$old_meta_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}termmeta WHERE term_id = %d;", $old_term_id ) );
 
 		// Copy across to split term
 		if ( $old_meta_data ) {
 			foreach ( $old_meta_data as $meta_data ) {
 				$wpdb->insert(
-					"{$wpdb->prefix}documentate_termmeta",
+					"{$wpdb->prefix}termmeta",
 					array(
-						'documentate_term_id' => $new_term_id,
+						'term_id' => $new_term_id,
 						'meta_key'            => $meta_data->meta_key,
 						'meta_value'          => $meta_data->meta_value
 					)
@@ -243,56 +228,6 @@ function documentate_taxonomy_metadata_update_content_for_split_terms( $old_term
 }
 add_action( 'split_shared_term', 'documentate_taxonomy_metadata_update_content_for_split_terms', 10, 4 );
 
-/**
- * Documentate Term Meta API - Update term meta
- *
- * @param mixed $term_id
- * @param string $meta_key
- * @param mixed $meta_value
- * @param string $prev_value (default: '')
- * @return bool
- */
-function update_documentate_term_meta( $term_id, $meta_key, $meta_value, $prev_value = '' ) {
-	return update_metadata( 'documentate_term', $term_id, $meta_key, $meta_value, $prev_value );
-}
-
-/**
- * Documentate Term Meta API - Add term meta
- *
- * @param mixed $term_id
- * @param mixed $meta_key
- * @param mixed $meta_value
- * @param bool $unique (default: false)
- * @return bool
- */
-function add_documentate_term_meta( $term_id, $meta_key, $meta_value, $unique = false ){
-	return add_metadata( 'documentate_term', $term_id, $meta_key, $meta_value, $unique );
-}
-
-/**
- * Documentate Term Meta API - Delete term meta
- *
- * @param mixed $term_id
- * @param mixed $meta_key
- * @param string $meta_value (default: '')
- * @param bool $delete_all (default: false)
- * @return bool
- */
-function delete_documentate_term_meta( $term_id, $meta_key, $meta_value = '', $delete_all = false ) {
-	return delete_metadata( 'documentate_term', $term_id, $meta_key, $meta_value, $delete_all );
-}
-
-/**
- * Documentate Term Meta API - Get term meta
- *
- * @param mixed $term_id
- * @param string $key
- * @param bool $single (default: true)
- * @return mixed
- */
-function get_documentate_term_meta( $term_id, $key, $single = true ) {
-	return get_metadata( 'documentate_term', $term_id, $key, $single );
-}
 
 /**
  * Move a term before the a	given element of its hierarchy level
@@ -357,7 +292,7 @@ function documentate_set_term_order( $term_id, $index, $taxonomy, $recursive = f
 	$term_id 	= (int) $term_id;
 	$index 		= (int) $index;
 
-	update_documentate_term_meta( $term_id, 'order', $index );
+	update_term_meta( $term_id, 'order', $index );
 
 	if( ! $recursive ) return $index;
 
@@ -378,6 +313,7 @@ function documentate_set_term_order( $term_id, $index, $taxonomy, $recursive = f
  *
  * It enables the support a 'menu_order' parameter to get_terms for the docu_cat taxonomy.
  * By default it is 'ASC'. It accepts 'DESC' too
+ * Revisit in WP 4.4 when term meta is part of core
  *
  * To disable it, set it ot false (or 0)
  *
@@ -419,13 +355,14 @@ function documentate_terms_clauses( $clauses, $taxonomies, $args ) {
 	// Meta name
 	$meta_name = 'order';
 
+
 	// query fields
 	if ( strpos( 'COUNT(*)', $clauses['fields'] ) === false )  {
-		$clauses['fields']  .= ', tm.* ';
+		$clauses['fields']  .= ', tm.meta_key, tm.meta_value, tm.meta_id '; // really needed?
 	}
 
 	//query join
-	$clauses['join'] .= " LEFT JOIN {$wpdb->documentate_termmeta} AS tm ON (t.term_id = tm.documentate_term_id AND tm.meta_key = '". $meta_name ."') ";
+	$clauses['join'] .= " LEFT JOIN {$wpdb->termmeta} AS tm ON (t.term_id = tm.term_id AND tm.meta_key = '". $meta_name ."') ";
 
 	// default to ASC
 	if ( ! isset( $args['menu_order'] ) || ! in_array( strtoupper($args['menu_order']), array('ASC', 'DESC')) ) {
@@ -443,3 +380,4 @@ function documentate_terms_clauses( $clauses, $taxonomies, $args ) {
 	return $clauses;
 }
 add_filter( 'terms_clauses', 'documentate_terms_clauses', 10, 3 );
+

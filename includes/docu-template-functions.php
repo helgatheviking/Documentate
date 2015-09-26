@@ -427,7 +427,7 @@ if ( ! function_exists( 'documentate_document_subcategories' ) ) {
         $parent_id      = ! empty( $term->term_id ) ? $term->term_id : 0;
 
         if ( is_document_category() ) {
-            $display_type = get_documentate_term_meta( $term->term_id, 'display_type', true );
+            $display_type = get_term_meta( $term->term_id, 'display_type', true );
             switch ( $display_type ) {
                 case 'documents' :
                     return;
@@ -465,7 +465,7 @@ if ( ! function_exists( 'documentate_document_subcategories' ) ) {
 
             // If we are hiding documents disable the loop and pagination
             if ( is_document_category() ) {
-                $display_type = get_documentate_term_meta( $term->term_id, 'display_type', true );
+                $display_type = get_term_meta( $term->term_id, 'display_type', true );
                 switch ( $display_type ) {
                     case 'subcategories' :
                         $wp_query->post_count    = 0;
@@ -503,7 +503,7 @@ if ( ! function_exists( 'documentate_subcategory_thumbnail' ) ) {
     function documentate_subcategory_thumbnail( $category ) {
         $small_thumbnail_size   = apply_filters( 'single_document_small_thumbnail_size', 'document_catalog' );
         $dimensions             = array( 'width' => 300, 'height' => 300 );
-        $thumbnail_id           = get_documentate_term_meta( $category->term_id, 'thumbnail_id', true  );
+        $thumbnail_id           = get_term_meta( $category->term_id, 'thumbnail_id', true  );
 
         if ( $thumbnail_id ) {
             $image = wp_get_attachment_image_src( $thumbnail_id, $small_thumbnail_size  );

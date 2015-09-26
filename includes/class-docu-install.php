@@ -131,25 +131,28 @@ class Docu_Install {
 	 *		documentate_termmeta - Term meta table - sadly WordPress does not have termmeta so we need our own
 	 */
 	private static function create_table() {
-		global $wpdb;
-
-		//$wpdb->hide_errors();
-
-		$collate = $wpdb->get_charset_collate();
-
-		$sql = "
-CREATE TABLE {$wpdb->prefix}documentate_termmeta (
-  meta_id bigint(20) NOT NULL auto_increment,
-  documentate_term_id bigint(20) NOT NULL,
-  meta_key varchar(255) NULL,
-  meta_value longtext NULL,
-  PRIMARY KEY  (meta_id),
-  KEY documentate_term_id (documentate_term_id),
-  KEY meta_key (meta_key)
-) $collate;
-		";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		global $wpdb;
+
+		$wpdb->hide_errors();
+
+		$collate = $wpdb->get_charset_collate();
+		$max_index_length = 191; // see core /wp-admin/includes/schema.php
+
+		$sql = "
+CREATE TABLE {$wpdb->prefix}termmeta (
+    meta_id bigint(20) unsigned NOT NULL auto_increment,
+    term_id bigint(20) unsigned NOT NULL default '0',
+    meta_key varchar(255) default NULL,
+    meta_value longtext NULL,
+    PRIMARY KEY (meta_id),
+    KEY term_id (term_id),
+    KEY meta_key (meta_key($max_index_length))
+) $collate;
+	";
+
 		dbDelta( $sql );
 	}
 

@@ -55,7 +55,7 @@ class Docu_Admin_Taxonomies {
 			return;
 		}
 
-		update_documentate_term_meta( $term_id, 'order', 0 );
+		update_term_meta( $term_id, 'order', 0 );
 	}
 
 	/**
@@ -157,8 +157,8 @@ console.log(wp.media);
 	 */
 	public function edit_category_fields( $term ) {
 
-		$display_type = get_documentate_term_meta( $term->term_id, 'display_type', true );
-		$thumbnail_id = absint( get_documentate_term_meta( $term->term_id, 'thumbnail_id', true ) );
+		$display_type = get_term_meta( $term->term_id, 'display_type', true );
+		$thumbnail_id = absint( get_term_meta( $term->term_id, 'thumbnail_id', true ) );
 
 		if ( $thumbnail_id ) {
 			$image = wp_get_attachment_thumb_url( $thumbnail_id );
@@ -248,11 +248,12 @@ console.log(wp.media);
 	 * @param mixed $term_id Term ID being saved
 	 */
 	public function save_category_fields( $term_id, $tt_id = '', $taxonomy = '' ) {
+
 		if ( isset( $_POST['display_type'] ) && 'docu_cat' === $taxonomy ) {
-			update_documentate_term_meta( $term_id, 'display_type', esc_attr( $_POST['display_type'] ) );
+			update_term_meta( $term_id, 'display_type', esc_attr( $_POST['display_type'] ) );
 		}
 		if ( isset( $_POST['docu_cat_thumbnail_id'] ) && 'docu_cat' === $taxonomy ) {
-			update_documentate_term_meta( $term_id, 'thumbnail_id', absint( $_POST['docu_cat_thumbnail_id'] ) );
+			update_term_meta( $term_id, 'thumbnail_id', absint( $_POST['docu_cat_thumbnail_id'] ) );
 		}
 	}
 
@@ -275,8 +276,6 @@ console.log(wp.media);
 		$new_columns['cb']    = $columns['cb'];
 		$new_columns['thumb'] = __( 'Image', 'documentate' );
 
-		unset( $columns['cb'] );
-
 		return array_merge( $new_columns, $columns );
 	}
 
@@ -292,7 +291,7 @@ console.log(wp.media);
 
 		if ( 'thumb' == $column ) {
 
-			$thumbnail_id = absint( get_documentate_term_meta( $id, 'thumbnail_id', true ) );
+			$thumbnail_id = absint( get_term_meta( $id, 'thumbnail_id', true ) );
 
 			if ( $thumbnail_id ) {
 				$image = wp_get_attachment_thumb_url( $thumbnail_id );

@@ -110,13 +110,16 @@ final class Documentate {
      */
     public function includes() {
 
-        include_once( "includes/class-docu-post-type.php" );   //  install tables, etc
-        include_once( "includes/class-docu-install.php" );   //  Post type and taxonomies
-        include_once( "includes/docu-core-functions.php" );   //  Core functions
-        include_once( "includes/docu-term-functions.php" );  // term functions
+        include_once( 'includes/class-docu-post-type.php' );   //  install tables, etc
+        include_once( 'includes/class-docu-install.php' );   //  Post type and taxonomies
+        include_once( 'includes/docu-core-functions.php' );   //  Core functions
+        include_once( 'includes/docu-term-functions.php' );  // term functions
 
         if ( is_admin() ) {
-            $this->admin = include_once( 'includes/admin/class-docu-admin.php' );
+            if( ! function_exists( 'add_term_meta' ) ){
+                include_once( 'includes/docu-compatibilty-4-4.php' );  // term functions 
+            }
+            $this->admin = include_once( 'includes/admin/class-docu-admin.php' );            
         } else {
             $this->frontend_includes();
         }
@@ -130,22 +133,22 @@ final class Documentate {
                
         $this->display = include_once( "includes/class-docu-frontend-display.php" ); //  Front end display functions
         
-        include_once( "includes/docu-template-hooks.php" ); // Template hooks
-        include_once( "includes/docu-conditional-functions.php" ); // conditional functions
-        include_once( "includes/class-docu-breadcrumbs.php" ); // breadcrumbs class
+        include_once( 'includes/docu-template-hooks.php' ); // Template hooks
+        include_once( 'includes/docu-conditional-functions.php' ); // conditional functions
+        include_once( 'includes/class-docu-breadcrumbs.php' ); // breadcrumbs class
 
         //  Widgets
-        include_once( "widgets/widget-category.php" );
-        include_once( "widgets/widget-document.php" );
-        include_once( "widgets/widget-search.php" );
-        include_once( "widgets/widget-tags.php" );
+        include_once( 'widgets/widget-category.php' );
+        include_once( 'widgets/widget-document.php' );
+        include_once( 'widgets/widget-search.php' );
+        include_once( 'widgets/widget-tags.php' );
     }
 
     /**
      * Function used to Init Documentate Template Functions - This makes them pluggable by plugins and themes.
      */
     public function include_template_functions() {
-        include_once( "includes/docu-template-functions.php" ); //  Template functions
+        include_once( 'includes/docu-template-functions.php' ); //  Template functions
     }
 
 
@@ -162,7 +165,7 @@ final class Documentate {
     public function load_plugin_textdomain() {
         $locale = apply_filters( 'plugin_locale', get_locale(), 'documentate' );
         load_textdomain( 'documentate', WP_LANG_DIR . '/documentate/documentate-' . $locale . '.mo' );
-        load_plugin_textdomain( 'documentate', false, plugin_basename( dirname( __FILE__ ) ) . "/languages" );
+        load_plugin_textdomain( 'documentate', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
     }
 
 
