@@ -2,7 +2,7 @@
 /**
  * Handles taxonomies in admin
  *
- * @class    DOCU_Admin_Taxonomies
+ * @class    Docu_Admin_Taxonomies
  * @version  1.0.0
  * @package  Documentate/Admin
  * @category Class
@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * DOCU_Admin_Taxonomies class.
+ * Docu_Admin_Taxonomies class.
  */
-class DOCU_Admin_Taxonomies {
+class Docu_Admin_Taxonomies {
 
 	/**
 	 * Constructor
@@ -328,4 +328,4 @@ console.log(wp.media);
 
 }
 
-new DOCU_Admin_Taxonomies();
+new Docu_Admin_Taxonomies();

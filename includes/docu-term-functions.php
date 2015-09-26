@@ -180,7 +180,7 @@ function documentate_document_dropdown_categories( $args = array(), $deprecated_
  * @return mixed
  */
 function documentate_walk_category_dropdown_tree() {
-	if ( ! class_exists( 'DOCU_cat_Dropdown_Walker' ) ) {
+	if ( ! class_exists( 'Docu_Cat_Dropdown_Walker' ) ) {
 		include_once( WC()->plugin_path() . '/includes/walkers/class-document-cat-dropdown-walker.php' );
 	}
 
@@ -188,7 +188,7 @@ function documentate_walk_category_dropdown_tree() {
 
 	// the user's options are the third parameter
 	if ( empty( $args[2]['walker']) || !is_a($args[2]['walker'], 'Walker' ) ) {
-		$walker = new DOCU_cat_Dropdown_Walker;
+		$walker = new Docu_Cat_Dropdown_Walker;
 	} else {
 		$walker = $args[2]['walker'];
 	}
