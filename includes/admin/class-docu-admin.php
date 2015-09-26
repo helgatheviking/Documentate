@@ -24,6 +24,7 @@ class Documentate_Admin {
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'current_screen', array( $this, 'conditional_includes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_filter( 'plugin_action_links_' . DOCU_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
 
 		// ajax callback for saving term order
 		add_action( 'wp_ajax_documentate_term_ordering', array( $this, 'term_ordering' ) ) ;
@@ -84,6 +85,22 @@ class Documentate_Admin {
 		}
 	}
 
+
+	/**
+	 * Show action links on the plugin screen.
+	 *
+	 * @param	mixed $links Plugin Action links
+	 * @return	array
+	 */
+	public static function plugin_action_links( $links ) {
+		$action_links = array(
+			'settings' => '<a href="' . admin_url( 'edit.php?post_type=document&page=documentate_options' ) . '" title="' . esc_attr( __( 'View Documentate Settings', 'documentate' ) ) . '">' . __( 'Settings', 'documentate' ) . '</a>',
+		);
+
+		return array_merge( $action_links, $links );
+	}
+
+	
 	/**
 	 * Ajax request handling for categories ordering
 	 */

@@ -5,7 +5,7 @@
  * @author   helgatheviking
  * @category Admin
  * @package  Documentate/Classes
- * @version  2.4.1
+ * @version  1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,7 +21,6 @@ class Docu_Install {
 	 * Hook in tabs.
 	 */
 	public static function init() {
-		add_filter( 'plugin_action_links_' . DOCU_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
 		add_action( 'wpmu_new_blog', array( __CLASS__, 'activate_sitewide_plugins' ) );
 		add_filter( 'wpmu_drop_tables', array( __CLASS__, 'wpmu_drop_tables' ) );
 	}
@@ -152,21 +151,6 @@ CREATE TABLE {$wpdb->prefix}documentate_termmeta (
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
-	}
-
-
-	/**
-	 * Show action links on the plugin screen.
-	 *
-	 * @param	mixed $links Plugin Action links
-	 * @return	array
-	 */
-	public static function plugin_action_links( $links ) {
-		$action_links = array(
-			'settings' => '<a href="' . admin_url( 'admin.php?page=wc-settings' ) . '" title="' . esc_attr( __( 'View Documentate Settings', 'documentate' ) ) . '">' . __( 'Settings', 'documentate' ) . '</a>',
-		);
-
-		return array_merge( $action_links, $links );
 	}
 
 
