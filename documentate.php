@@ -86,12 +86,13 @@ final class Documentate {
         register_activation_hook( __FILE__, array( 'Docu_Install', 'install' ) );
 
         add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
+        add_action( 'after_theme_setup', array( $this, 'add_thumbnail_support' ) );
         add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
 
     }
 
     /**
-     * Define WC Constants
+     * Define Constants
      */
     private function define_constants() {
         if ( ! defined( 'DOCU_PLUGIN_FILE' ) ) {
@@ -166,6 +167,17 @@ final class Documentate {
         $locale = apply_filters( 'plugin_locale', get_locale(), 'documentate' );
         load_textdomain( 'documentate', WP_LANG_DIR . '/documentate/documentate-' . $locale . '.mo' );
         load_plugin_textdomain( 'documentate', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+    }
+
+    /**
+     * Ensure post thumbnail support is turned on.
+     * 
+     */
+    private function add_thumbnail_support() {
+        if ( ! current_theme_supports( 'post-thumbnails' ) ) {
+            add_theme_support( 'post-thumbnails' );
+        }
+        add_post_type_support( 'document', 'thumbnail' );
     }
 
 

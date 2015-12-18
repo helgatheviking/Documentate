@@ -37,9 +37,6 @@ class Documentate_Admin_Post_Type {
 		add_action( 'dashboard_glance_items', array( $this, 'add_glance_counts' ) );
 		add_action( 'admin_head', array( $this, 'fix_glance_icon' ) );
 
-		// Add thumbnail support for this post type
-		add_theme_support( 'post-thumbnails', array( 'document' ) );
-
 		// Allow filtering of posts by taxonomy in the admin view
 		add_action( 'restrict_manage_posts', array( $this, 'add_taxonomy_filters' ) );
 
