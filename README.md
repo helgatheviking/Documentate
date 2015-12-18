@@ -1,4 +1,3 @@
-/*
 **Plugin Name:** Documentate  
 **Plugin URI:**  http://www.github.com/helgatheviking/documentate  
 **Description:** Checks the health of your WordPress install  
@@ -14,7 +13,6 @@
 **Stable tag:** trunk  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
- */
 
 Customizable documentation plugin for creating a wiki or knowledgebase
 

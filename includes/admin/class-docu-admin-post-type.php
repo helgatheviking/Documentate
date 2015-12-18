@@ -48,7 +48,7 @@ class Documentate_Admin_Post_Type {
 	/**
 	 * Custom Post Type Columns
 	 * @param array $columns
-	 * @since  1.0.0documentate_
+	 * @since  1.0.0
 	 */ 
 	public function edit_columns($columns){
 	    $columns = array(  

@@ -48,7 +48,7 @@ final class Documentate {
      *
      * @since 2.1
      * @static
-     * @see WC()
+     * @see Docu()
      * @return Documentate - Main instance
      */
     public static function instance() {
@@ -146,14 +146,6 @@ final class Documentate {
     }
 
     /**
-     * Function used to Init Documentate Template Functions - This makes them pluggable by plugins and themes.
-     */
-    public function include_template_functions() {
-        include_once( 'includes/docu-template-functions.php' ); //  Template functions
-    }
-
-
-    /**
      * Load Localisation files.
      *
      * Note: the first-loaded translation file overrides any following ones if the same translation is present.
@@ -180,6 +172,16 @@ final class Documentate {
         add_post_type_support( 'document', 'thumbnail' );
     }
 
+    /**
+     * Function used to Init Documentate Template Functions - This makes them pluggable by plugins and themes.
+     */
+    public function include_template_functions() {
+        include_once( 'includes/docu-template-functions.php' ); //  Template functions
+    }
+
+    /******************
+     * HELPER FUNCTIONS
+     ******************/
 
     /**
      * Get the plugin url.
