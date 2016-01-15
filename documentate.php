@@ -6,8 +6,8 @@
  * Author: helgatheviking
  * Author URI: http://kathyisawesome.com
  * Version: 0.1-beta
- * Requires at least: 4.1
- * Tested up to: 4.3
+ * Requires at least: 4.4.0
+ * Tested up to: 4.4.1
  *
  * Text Domain: documentate
  * Domain Path: /languages/
@@ -117,9 +117,6 @@ final class Documentate {
         include_once( 'includes/docu-term-functions.php' );  // term functions
 
         if ( is_admin() ) {
-            if( ! function_exists( 'add_term_meta' ) ){
-                include_once( 'includes/docu-compatibilty-4-4.php' );  // term functions 
-            }
             $this->admin = include_once( 'includes/admin/class-docu-admin.php' );            
         } else {
             $this->frontend_includes();
