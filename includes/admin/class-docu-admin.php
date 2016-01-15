@@ -21,9 +21,8 @@ class Documentate_Admin {
 	 * Constructor
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'includes' ) );
+		add_action( 'admin_init', array( $this, 'includes' ) );
 		add_action( 'current_screen', array( $this, 'conditional_includes' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_filter( 'plugin_action_links_' . DOCU_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
 
 		// ajax callback for saving term order
@@ -41,47 +40,15 @@ class Documentate_Admin {
 	public function includes() {
 		include_once( 'class-docu-admin-post-type.php' );
 		include_once( 'class-docu-admin-settings.php' );
+		include_once( 'class-docu-admin-taxonomies.php' );
 	}
 
 	/**
 	 * Include admin files conditionally
 	 */
 	public function conditional_includes( $screen ) {
-		if( 'edit-docu_cat' == $screen->id ){
-			include_once( 'class-docu-admin-taxonomies.php' );
-		} else if ( 'options-permalink'  == $screen->id ){
+		if ( 'options-permalink'  == $screen->id ){
 			include_once( 'class-docu-admin-permalink-settings.php' );
-		}
-
-	}
-
-	/**
-	 * Show action links on the plugin screen.
-	 *
-	 * @param	mixed $links Plugin Action links
-	 * @return	array
-	 */
-	public function enqueue_scripts() {
-		$screen = get_current_screen();
-		$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
-		// Edit document category pages
-		if ( in_array( $screen->id, array( 'edit-docu_cat' ) ) ) {
-			wp_enqueue_media();
-		}
-
-		// Term ordering - only when sorting by term_order
-		if ( ! empty( $_GET['taxonomy'] ) && in_array( $_GET['taxonomy'], apply_filters( 'documentate_sortable_taxonomies', array( 'docu_cat' ) ) ) && ! isset( $_GET['orderby'] ) ) {
-
-			wp_enqueue_script( 'documentate_term_ordering', Docu()->plugin_url() . '/assets/js/admin/term-ordering' . $suffix . '.js', array( 'jquery-ui-sortable' ), Docu()->version );
-
-			$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_text_field( $_GET['taxonomy'] ) : '';
-
-			$documentate_term_order_params = array(
-				'taxonomy' => $taxonomy
-			);
-
-			wp_localize_script( 'documentate_term_ordering', 'documentate_term_ordering_params', $documentate_term_order_params );
 		}
 	}
 

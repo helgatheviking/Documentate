@@ -1,4 +1,4 @@
-/*global ajaxurl, documentate_term_ordering_params */
+/*global ajaxurl, DOCUMENTATE_TERM_ORDER_PARAMS */
 
 /* Modifided script from the simple-page-ordering plugin */
 jQuery( function( $ ) {
@@ -58,7 +58,7 @@ jQuery( function( $ ) {
 			ui.item.find( '.check-column input' ).hide().after( '<img alt="processing" src="images/wpspin_light.gif" class="waiting" style="margin-left: 6px;" />' );
 
 			// Go do the sorting stuff via ajax
-			$.post( ajaxurl, { action: 'documentate_term_ordering', id: termid, nextid: nexttermid, thetaxonomy: documentate_term_ordering_params.taxonomy }, function(response){
+			$.post( ajaxurl, { action: 'documentate_term_ordering', id: termid, nextid: nexttermid, thetaxonomy: DOCUMENTATE_TERM_ORDER_PARAMS.taxonomy }, function(response){
 				if ( response === 'children' ) {
 					window.location.reload();
 				} else {

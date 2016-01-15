@@ -22,15 +22,16 @@ class Docu_Admin_Taxonomies {
 	 * Constructor
 	 */
 	public function __construct() {
-		// Category/term ordering
-		add_action( 'create_term', array( $this, 'create_term' ), 5, 3 );
-		add_action( 'delete_term', array( $this, 'delete_term' ), 5 );
+
+		// enqueue scripts
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		// Add form
-		add_action( 'docu_cat_add_form_fields', array( $this, 'add_category_fields' ) );
-		add_action( 'docu_cat_edit_form_fields', array( $this, 'edit_category_fields' ), 10 );
-		add_action( 'created_term', array( $this, 'save_category_fields' ), 10, 3 );
-		add_action( 'edit_term', array( $this, 'save_category_fields' ), 10, 3 );
+		add_action( 'docu_cat_add_form_fields', array( $this, 'add_category_form_fields' ) );
+		add_action( 'docu_cat_edit_form_fields', array( $this, 'edit_category_form_fields' ), 10 );
+
+		add_action( 'created_docu_cat', array( $this, 'save_category_fields' ), 10, 2 );
+		add_action( 'edited_docu_cat', array( $this, 'edit_category_fields' ), 10, 2 );
 
 		// Add columns
 		add_filter( 'manage_edit-docu_cat_columns', array( $this, 'docu_cat_columns' ) );
@@ -43,40 +44,51 @@ class Docu_Admin_Taxonomies {
 		add_filter( 'wp_terms_checklist_args', array( $this, 'disable_checked_ontop' ) );
 	}
 
-	/**
-	 * Order term when created (put in position 0).
-	 *
-	 * @param mixed $term_id
-	 * @param mixed $tt_id
-	 * @param mixed $taxonomy
-	 */
-	public function create_term( $term_id, $tt_id = '', $taxonomy = '' ) {
-		if ( 'docu_cat' != $taxonomy ) {
-			return;
-		}
-
-		update_term_meta( $term_id, 'order', 0 );
-	}
 
 	/**
-	 * When a term is deleted, delete its meta.
+	 * Enqueue admin scripts
 	 *
-	 * @param mixed $term_id
+	 * @param	str $hook
+	 * @return	array
 	 */
-	public function delete_term( $term_id ) {
-		global $wpdb;
+	public function enqueue_scripts( $hook ) {
+		$screen = get_current_screen();
+		$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		$term_id = absint( $term_id );
+		// Edit document category pages
+		if ( 'edit-tags.php' == $hook && in_array( $screen->id, array( 'edit-docu_cat' ) ) ) {
+			wp_enqueue_media();
 
-		if ( $term_id ) {
-			$wpdb->delete( $wpdb->documentate_termmeta, array( 'term_id' => $term_id ), array( '%d' ) );
+			$docu_media_params = array( 
+				'title' => __( "Choose an image", "documentate" ),
+				'button' => __( "Use image", "documentate" ),
+				'placeholder' => documentate_placeholder_img_src() );
+
+			wp_enqueue_script( 'documentate_term_thunbnails', Docu()->plugin_url() . '/assets/js/admin/term-thumbnails' . $suffix . '.js', array( 'jquery', 'media-editor' ), Docu()->version, true );
+			wp_localize_script( 'documentate_term_thunbnails', 'DOCUMENTATE_MEDIA_PARAMS', $docu_media_params );
 		}
+
+		// Term ordering - only when sorting by term_order
+		if ( ! empty( $_GET['taxonomy'] ) && in_array( $_GET['taxonomy'], apply_filters( 'documentate_sortable_taxonomies', array( 'docu_cat' ) ) ) && ! isset( $_GET['orderby'] ) ) {
+
+			wp_enqueue_script( 'documentate_term_ordering', Docu()->plugin_url() . '/assets/js/admin/term-ordering' . $suffix . '.js', array( 'jquery-ui-sortable' ), Docu()->version, true );
+
+			$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_text_field( $_GET['taxonomy'] ) : '';
+
+			$docu_term_order_params = array(
+				'taxonomy' => $taxonomy
+			);
+
+			wp_localize_script( 'documentate_term_ordering', 'DOCUMENTATE_TERM_ORDER_PARAMS', $docu_term_order_params );
+		}
+
 	}
+
 
 	/**
 	 * Category thumbnail fields.
 	 */
-	public function add_category_fields() {
+	public function add_category_form_fields() {
 		?>
 		<div class="form-field">
 			<label for="display_type"><?php _e( 'Display type', 'documentate' ); ?></label>
@@ -95,56 +107,6 @@ class Docu_Admin_Taxonomies {
 				<button type="button" class="upload_image_button button"><?php _e( 'Upload/Add image', 'documentate' ); ?></button>
 				<button type="button" class="remove_image_button button"><?php _e( 'Remove image', 'documentate' ); ?></button>
 			</div>
-			<script type="text/javascript">
-
-				// Only show the "remove image" button when needed
-				if ( ! jQuery( '#docu_cat_thumbnail_id' ).val() ) {
-					jQuery( '.remove_image_button' ).hide();
-				}
-
-				// Uploading files
-				var file_frame;
-
-				jQuery( document ).on( 'click', '.upload_image_button', function( event ) {
-
-					event.preventDefault();
-
-					// If the media frame already exists, reopen it.
-					if ( file_frame ) {
-						file_frame.open();
-						return;
-					}
-console.log(wp.media);
-					// Create the media frame.
-					file_frame = wp.media.frames.downloadable_file = wp.media({
-						title: '<?php _e( "Choose an image", "documentate" ); ?>',
-						button: {
-							text: '<?php _e( "Use image", "documentate" ); ?>'
-						},
-						multiple: false
-					});
-
-					// When an image is selected, run a callback.
-					file_frame.on( 'select', function() {
-						var attachment = file_frame.state().get( 'selection' ).first().toJSON();
-
-						jQuery( '#docu_cat_thumbnail_id' ).val( attachment.id );
-						jQuery( '#docu_cat_thumbnail' ).find( 'img' ).attr( 'src', attachment.sizes.thumbnail.url );
-						jQuery( '.remove_image_button' ).show();
-					});
-
-					// Finally, open the modal.
-					file_frame.open();
-				});
-
-				jQuery( document ).on( 'click', '.remove_image_button', function() {
-					jQuery( '#docu_cat_thumbnail' ).find( 'img' ).attr( 'src', '<?php echo esc_js( documentate_placeholder_img_src() ); ?>' );
-					jQuery( '#docu_cat_thumbnail_id' ).val( '' );
-					jQuery( '.remove_image_button' ).hide();
-					return false;
-				});
-
-			</script>
 			<div class="clear"></div>
 		</div>
 		<?php
@@ -155,7 +117,7 @@ console.log(wp.media);
 	 *
 	 * @param mixed $term Term (category) being edited
 	 */
-	public function edit_category_fields( $term ) {
+	public function edit_category_form_fields( $term ) {
 
 		$display_type = get_term_meta( $term->term_id, 'display_type', true );
 		$thumbnail_id = absint( get_term_meta( $term->term_id, 'thumbnail_id', true ) );
@@ -186,56 +148,6 @@ console.log(wp.media);
 					<button type="button" class="upload_image_button button"><?php _e( 'Upload/Add image', 'documentate' ); ?></button>
 					<button type="button" class="remove_image_button button"><?php _e( 'Remove image', 'documentate' ); ?></button>
 				</div>
-				<script type="text/javascript">
-
-					// Only show the "remove image" button when needed
-					if ( '0' === jQuery( '#docu_cat_thumbnail_id' ).val() ) {
-						jQuery( '.remove_image_button' ).hide();
-					}
-
-					// Uploading files
-					var file_frame;
-
-					jQuery( document ).on( 'click', '.upload_image_button', function( event ) {
-
-						event.preventDefault();
-
-						// If the media frame already exists, reopen it.
-						if ( file_frame ) {
-							file_frame.open();
-							return;
-						}
-
-						// Create the media frame.
-						file_frame = wp.media.frames.downloadable_file = wp.media({
-							title: '<?php _e( "Choose an image", "documentate" ); ?>',
-							button: {
-								text: '<?php _e( "Use image", "documentate" ); ?>'
-							},
-							multiple: false
-						});
-
-						// When an image is selected, run a callback.
-						file_frame.on( 'select', function() {
-							var attachment = file_frame.state().get( 'selection' ).first().toJSON();
-
-							jQuery( '#docu_cat_thumbnail_id' ).val( attachment.id );
-							jQuery( '#docu_cat_thumbnail' ).find( 'img' ).attr( 'src', attachment.sizes.thumbnail.url );
-							jQuery( '.remove_image_button' ).show();
-						});
-
-						// Finally, open the modal.
-						file_frame.open();
-					});
-
-					jQuery( document ).on( 'click', '.remove_image_button', function() {
-						jQuery( '#docu_cat_thumbnail' ).find( 'img' ).attr( 'src', '<?php echo esc_js( documentate_placeholder_img_src() ); ?>' );
-						jQuery( '#docu_cat_thumbnail_id' ).val( '' );
-						jQuery( '.remove_image_button' ).hide();
-						return false;
-					});
-
-				</script>
 				<div class="clear"></div>
 			</td>
 		</tr>
@@ -247,15 +159,35 @@ console.log(wp.media);
 	 *
 	 * @param mixed $term_id Term ID being saved
 	 */
-	public function save_category_fields( $term_id, $tt_id = '', $taxonomy = '' ) {
+	public function save_category_fields( $term_id, $tt_id = '' ) {
 
-		if ( isset( $_POST['display_type'] ) && 'docu_cat' === $taxonomy ) {
-			update_term_meta( $term_id, 'display_type', esc_attr( $_POST['display_type'] ) );
-		}
-		if ( isset( $_POST['docu_cat_thumbnail_id'] ) && 'docu_cat' === $taxonomy ) {
-			update_term_meta( $term_id, 'thumbnail_id', absint( $_POST['docu_cat_thumbnail_id'] ) );
-		}
+		update_term_meta( $term_id, 'order', 0 );
+
+	    if ( isset( $_POST['display_type'] ) && '' !== $_POST['display_type'] ) {
+	        $type = in_array( $_POST['display_type'], array( 'documents', 'subcategory', 'both' ) ) ? $_POST['display_type'] : '';
+	        add_term_meta( $term_id, 'display_type', $type );
+	    }
+	    if ( isset( $_POST['docu_cat_thumbnail_id'] ) && absint( $_POST['docu_cat_thumbnail_id'] ) > 0 ) {
+	        add_term_meta( $term_id, 'thumbnail_id', absint( $_POST['docu_cat_thumbnail_id'] ) );
+	    }
 	}
+
+	/**
+	 * edit_category_fields function.
+	 *
+	 * @param mixed $term_id Term ID being saved
+	 */
+	public function edit_category_fields( $term_id, $tt_id = '' ) {
+
+	    if ( isset( $_POST['display_type'] ) && '' !== $_POST['display_type'] ) {
+	        $type = in_array( $_POST['display_type'], array( 'documents', 'subcategory', 'both' ) ) ? $_POST['display_type'] : '';
+	        update_term_meta( $term_id, 'display_type', $type );
+	    }
+	    if ( isset( $_POST['docu_cat_thumbnail_id'] ) && absint( $_POST['docu_cat_thumbnail_id'] ) > 0 ) {
+	        update_term_meta( $term_id, 'thumbnail_id', absint( $_POST['docu_cat_thumbnail_id'] ) );
+	    }
+	}
+
 
 	/**
 	 * Description for docu_cat page to aid users.
@@ -284,14 +216,14 @@ console.log(wp.media);
 	 *
 	 * @param mixed $columns
 	 * @param mixed $column
-	 * @param mixed $id
+	 * @param mixed $term_id
 	 * @return array
 	 */
-	public function docu_cat_column( $columns, $column, $id ) {
+	public function docu_cat_column( $content, $column, $term_id ) {
 
-		if ( 'thumb' == $column ) {
+		if( $column == 'thumb' ){
 
-			$thumbnail_id = absint( get_term_meta( $id, 'thumbnail_id', true ) );
+			$thumbnail_id = absint( get_term_meta( $term_id, 'thumbnail_id', true ) );
 
 			if ( $thumbnail_id ) {
 				$image = wp_get_attachment_thumb_url( $thumbnail_id );
@@ -303,11 +235,11 @@ console.log(wp.media);
 			// Ref: http://core.trac.wordpress.org/ticket/23605
 			$image = str_replace( ' ', '%20', $image );
 
-			$columns .= '<img src="' . esc_url( $image ) . '" alt="' . esc_attr__( 'Thumbnail', 'documentate' ) . '" class="wp-post-image" height="48" width="48" />';
+			$content .= '<img src="' . esc_url( $image ) . '" alt="' . esc_attr__( 'Thumbnail', 'documentate' ) . '" class="wp-post-image" height="48" width="48" />';
 
 		}
 
-		return $columns;
+		return $content;
 	}
 
 	/**
